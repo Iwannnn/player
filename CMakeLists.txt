@@ -7,8 +7,10 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 
-# Qt
+# package
 find_package(Qt5 REQUIRED COMPONENTS Widgets)
+find_package(SDL2 REQUIRED)
+
 
 # output path
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
@@ -32,12 +34,14 @@ add_executable(player
     src/decoder.cpp
     src/demuxer.cpp
     src/video_processor.cpp
+    src/audio_processor.cpp
     src/controller.cpp
     include/mainwindow.h
     include/decoder.h
     include/demuxer.h
     include/processor.h
     include/video_processor.h
+    include/audio_processor.h
     include/controller.h
 )
 
@@ -50,4 +54,5 @@ target_link_libraries(player
     avformat
     avfilter
     avutil
+    ${SDL2_LIBRARIES}      # ✅ 加入这一行，链接 SDL2
 )

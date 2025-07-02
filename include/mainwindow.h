@@ -1,8 +1,12 @@
 #pragma once
 
+#include <qcoreevent.h>
+
+#include <QDebug>
+#include <QFileDialog>
 #include <QMainWindow>
+#include <QMessageBox>
 #include <QTimer>
-#include <cstddef>
 
 #include "controller.h"
 #include "decoder.h"
@@ -15,16 +19,16 @@ class MainWindow;
 class MainWindow : public QMainWindow {
   Q_OBJECT
 
-public:
+ public:
   explicit MainWindow(QWidget *parent = nullptr);
   ~MainWindow();
 
-private:
+ private:
   Ui::MainWindow *ui;
   Controller controller;
   QTimer *timer = nullptr;
 
-private slots:
+ private slots:
   void on_btnOpen_clicked();
   void on_btnPlay_clicked();
   void on_btnPause_clicked();

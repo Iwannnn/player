@@ -12,7 +12,7 @@ class Decoder {
   Decoder();
   ~Decoder();
 
-  int open_stream(AVFormatContext *fmt_ctx, int stream_index);
+  int init_decoder(AVFormatContext *fmt_ctx, int stream_index);
 
   AVCodecContext *get_codec_ctx() const;
 
@@ -24,7 +24,11 @@ class Decoder {
 
   int seek(int64_t timestamp, int stream_index);
 
+  AVStream *get_stream() const;
+
  private:
   AVCodecContext *codec_ctx = nullptr;
+  const AVCodec *codec = nullptr;
+  AVStream *stream = nullptr;
   int stream_idx = -1;
 };

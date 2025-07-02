@@ -1,10 +1,8 @@
 #include "demuxer.h"
 
-#include <libavformat/avformat.h>
-
 #include <QDebug>
 
-Demuxer::Demuxer() { qDebug() << "Demuxer constructed"; }
+Demuxer::Demuxer() {}
 
 Demuxer::~Demuxer() { close(); }
 
