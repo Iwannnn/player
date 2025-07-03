@@ -15,8 +15,15 @@ find_package(SDL2 REQUIRED)
 # output path
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 
-# FFmpeg include 和 lib 路径
-set(FFMPEG_DIR /home/iwan/code/FFmpeg/build64)
+# # FFmpeg include 和 lib 路径
+# set(FFMPEG_DIR /home/iwan/code/FFmpeg/build64)
+
+# 设置平台相关变量
+if (WIN32)
+    set(FFMPEG_DIR "C:/ffmpeg-win")
+else()
+    set(FFMPEG_DIR "/home/iwan/code/FFmpeg/build64")
+endif()
 
 # include path
 include_directories(${FFMPEG_DIR}/include)
