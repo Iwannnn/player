@@ -27,11 +27,11 @@ class MainWindow : public QMainWindow {
   Ui::MainWindow *ui;
   Controller controller;
   QTimer *timer = nullptr;
-
+  QString format_time(double sec);
+  void update_frame();
  private slots:
   void on_btnOpen_clicked();
   void on_btnPlay_clicked();
   void on_btnPause_clicked();
-
-  void update_frame();
+  void on_sliderProgress_sliderReleased();
 };

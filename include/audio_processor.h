@@ -20,6 +20,7 @@ class AudioProcessor : public Processor {
                     AVStream *stream);
   double get_audio_clock() const;
   double get_audio_pts() const;
+  int get_device_id() const;
   int close_audio();
 
  private:

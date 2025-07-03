@@ -23,6 +23,8 @@ class Controller {
   QImage get_cur_image() const;
   double get_audio_clock() const;
   double get_video_pts() const;
+  double get_duration() const;
+  int seek_to(double seconds);
 
  private:
   int open_video_stream(AVFormatContext *fmt_ctx);

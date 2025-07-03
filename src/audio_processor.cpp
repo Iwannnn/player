@@ -152,3 +152,5 @@ double AudioProcessor::get_audio_clock() const {
 }
 
 double AudioProcessor::get_audio_pts() const { return audio_pts; }
+
+int AudioProcessor::get_device_id() const { return dev_id; }

@@ -1,5 +1,7 @@
 #include "mainwindow.h"
 
+#include <qchar.h>
+
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -62,7 +64,38 @@ void MainWindow::update_frame() {
           ui->labelVideo->size(), Qt::KeepAspectRatio,
           Qt::SmoothTransformation));
     }
-  } else {
-    // qDebug() << " 2";
   }
+
+  double pos = audio_clock;
+  double duration = controller.get_duration();
+
+  if (duration > 0) {
+    int slider_value = static_cast<int>((pos / duration) * 100);
+    ui->sliderProgress->blockSignals(true);
+    ui->sliderProgress->setValue(slider_value);
+    ui->sliderProgress->blockSignals(false);
+
+    QString time_str =
+        QString("%1 / %2").arg(format_time(pos)).arg(format_time(duration));
+
+    ui->lableTime->setText(time_str);
+  }
+}
+
+QString MainWindow::format_time(double sec) {
+  int total = static_cast<int>(sec);
+  int min = total / 60;
+  int sec_remain = total % 60;
+  return QString("%1:%2")
+      .arg(min, 2, 10, QLatin1Char('0'))
+      .arg(sec_remain, 2, 10, QLatin1Char('0'));
+}
+
+void MainWindow::on_sliderProgress_sliderReleased() {
+  qDebug() << ui->sliderProgress->value();
+  double percent = ui->sliderProgress->value() / 100.0;
+  double duration = controller.get_duration();
+  double seek_time = percent * duration;
+
+  controller.seek_to(seek_time);
 }

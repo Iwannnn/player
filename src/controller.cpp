@@ -1,6 +1,13 @@
 #include "controller.h"
 
 #include <QDebug>
+#include <cstdint>
+
+#include "SDL_audio.h"
+#include "libavcodec/avcodec.h"
+#include "libavformat/avformat.h"
+#include "libavformat/avio.h"
+#include "libavutil/avutil.h"
 Controller::Controller() {
   pkt = av_packet_alloc();
   frame = av_frame_alloc();
@@ -114,4 +121,26 @@ double Controller::get_audio_clock() const {
 
 double Controller::get_video_pts() const {
   return video_processor.get_video_pts();
+}
+
+double Controller::get_duration() const {
+  if (!demuxer.get_fmt_ctx()) return 0.0;
+  return demuxer.get_fmt_ctx()->duration / (double)AV_TIME_BASE;
+}
+
+int Controller::seek_to(double seconds) {
+  int64_t ts = static_cast<int64_t>(seconds * AV_TIME_BASE);
+
+  int ret = av_seek_frame(demuxer.get_fmt_ctx(), -1, ts, AVSEEK_FLAG_BACKWARD);
+  if (ret < 0) {
+    qDebug() << "seek failed";
+    return -1;
+  }
+
+  // 清除旧数据
+  avcodec_flush_buffers(video_decoder.get_codec_ctx());
+  avcodec_flush_buffers(audio_decoder.get_codec_ctx());
+  SDL_ClearQueuedAudio(audio_processor.get_device_id());
+
+  return 0;
 }
